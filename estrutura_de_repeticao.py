@@ -25,7 +25,7 @@ while True:
         historico.append(f"Saque de R${valor_saque}")
       continue
     case "3":
-      print(f"O seu saldo atual é de R${saldo}")
+      print(f"O seu saldo atual é de R${saldo:.2f}")
       continue
     case "4":
       if len(historico) > 0:
