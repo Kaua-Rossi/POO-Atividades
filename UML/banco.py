@@ -1,34 +1,7 @@
-class Pessoa:
-    def __init__(self, nome, idade, cpf):
-        self.nome = nome
-        self.idade = idade
-        self.cpf = cpf
+from conta import Conta
+from pessoa import Pessoa
 
-    def getNome(self):
-        return self.nome
-
-    def getIdade(self):
-        return self.idade
-
-    def getCpf(self):
-        return self.cpf
-
-class Conta:
-    def __init__(self, titular, numero, saldo):
-        self.titular = titular
-        self.numero = numero
-        self.saldo = saldo
-
-    def getTitular(self):
-        return self.titular
-
-    def getNumero(self):
-        return self.numero
-
-    def getSaldo(self):
-        return self.saldo
-
-class Banco:
+class BancoLista:
     def __init__(self):
         self.contas = []
 
@@ -78,7 +51,7 @@ class Banco:
 
 gerador_de_numero = lambda cpf: ''.join(filter(str.isdigit, cpf))[-6:] if ''.join(filter(str.isdigit, cpf)) else None
 
-banco = Banco()
+banco = BancoLista()
 
 pessoas = []
 
