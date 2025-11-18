@@ -1,0 +1,192 @@
+class Curso:
+    def __init__(self, nome, id_curso):
+        self.nome = nome
+        self.id_curso = id_curso
+
+    def __str__(self):
+        return f"Curso: {self.nome} (ID: {self.id_curso})"
+
+class Campus:
+    def __init__(self, nome, cidade):
+        self.nome = nome
+        self.cidade = cidade
+        self.cursos = []
+
+    def adicionar_curso(self, curso):
+        self.cursos.append(curso)
+        print(f"Curso '{curso.nome}' adicionado ao Campus {self.nome}.")
+
+    def buscar_curso(self, id_curso):
+        for curso in self.cursos:
+            if curso.id_curso == id_curso:
+                return curso
+        return None
+
+    def remover_curso(self, id_curso):
+        curso_remover = self.buscar_curso(id_curso)
+        if curso_remover:
+            self.cursos.remove(curso_remover)
+            print(f"curso '{curso_remover.nome}' removido do Campus {self.nome}.")
+            return True
+        print(f"erro: curso com id '{id_curso}' não encontrado")
+        return False
+
+    def listar_cursos(self):
+        print(f"\n--- Cursos do Campus {self.nome} ---")
+        if not self.cursos:
+            print("Nenhum curso cadastrado.")
+        else:
+            for curso in self.cursos:
+                print(f"- {curso}")
+
+    def __str__(self):
+        return f"Campus: {self.nome} - Cidade: {self.cidade}"
+
+class Universidade:
+    def __init__(self, nome):
+        self.nome = nome
+        self.campi = []
+
+    def adicionar_campus(self, campus):
+        self.campi.append(campus)
+        print(f"Campus '{campus.nome}' adicionado à universidade.")
+
+    def buscar_campus(self, nome_campus):
+        for campus in self.campi:
+            if campus.nome.lower() == nome_campus.lower():
+                return campus
+        return None
+
+    def remover_campus(self, nome_campus):
+        campus_a_remover = self.buscar_campus(nome_campus)
+        if campus_a_remover:
+            self.campi.remove(campus_a_remover)
+            print(f"Campus '{campus_a_remover.nome}' removido.")
+            return True
+        print(f"erro: Campus '{nome_campus}' não encontrado")
+        return False
+
+    def listar_campi(self):
+        print(f"\n--- Campi da {self.nome} ---")
+        if not self.campi:
+            print("nenhum campus cadastrado.")
+        else:
+            for i, campus in enumerate(self.campi):
+                print(f"{i + 1}. {campus}")
+
+def exibir_menu_principal():
+    print("\n### Sistema de Gerenciamento Acadêmico ###")
+    print("1. Gerenciar Campi")
+    print("2. Gerenciar Cursos")
+    print("3. Sair")
+    return input("Escolha uma opção: ")
+
+def exibir_menu_crud(entidade):
+    print(f"\n--- Gerenciar {entidade} ---")
+    print("1. Adicionar")
+    print("2. Listar")
+    print("3. Atualizar")
+    print("4. Remover")
+    print("5. Voltar ao menu principal")
+    return input("Escolha uma opção: ")
+
+def gerenciar_campi(universidade):
+    while True:
+        opcao = exibir_menu_crud("Campi")
+        if opcao == '1':
+            nome = input("Digite o nome do novo campus: ")
+            cidade = input(f"Digite a cidade do campus {nome}: ")
+            novo_campus = Campus(nome, cidade)
+            universidade.adicionar_campus(novo_campus)
+        elif opcao == '2':
+            universidade.listar_campi()
+        elif opcao == '3':
+            nome_antigo = input("Digite o nome do campus que deseja atualizar: ")
+            campus = universidade.buscar_campus(nome_antigo)
+            if campus:
+                novo_nome = input(f"Digite o novo nome para o campus '{campus.nome}' (ou deixe em branco para não alterar): ")
+                nova_cidade = input(f"Digite a nova cidade para o campus '{campus.nome}' (ou deixe em branco para não alterar): ")
+                if novo_nome:
+                    campus.nome = novo_nome
+                if nova_cidade:
+                    campus.cidade = nova_cidade
+                print("Campus atualizado com sucesso")
+            else:
+                print(f"Campus '{nome_antigo}' não encontrado")
+        elif opcao == '4':
+            nome_campus = input("Digite o nome do campus que deseja remover: ")
+            universidade.remover_campus(nome_campus)
+        elif opcao == '5':
+            break
+        else:
+            print("Opção inválida")
+
+def gerenciar_cursos(universidade):
+    universidade.listar_campi()
+    nome_campus = input("\nDigite o nome do campus para gerenciar os cursos: ")
+    campus_selecionado = universidade.buscar_campus(nome_campus)
+
+    if not campus_selecionado:
+        print(f"Campus '{nome_campus}' não encontrado.")
+        return
+
+    while True:
+        print(f"\n### Gerenciando Cursos do Campus: {campus_selecionado.nome} ###")
+        opcao = exibir_menu_crud("Cursos")
+        if opcao == '1':
+            nome_curso = input("Digite o nome do novo curso: ")
+            id_curso = input(f"Digite o código/id do curso {nome_curso} (ex: 'ADS' para o curso Análise e desenvolvimento de sistemas): ")
+            if campus_selecionado.buscar_curso(id_curso):
+                print("Erro: já existe um curso com esse id nesse campus")
+            else:
+                novo_curso = Curso(nome_curso, id_curso)
+                campus_selecionado.adicionar_curso(novo_curso)
+        elif opcao == '2':
+            campus_selecionado.listar_cursos()
+        elif opcao == '3':
+            id_curso = input("Digite o id do curso que deseja atualizar: ")
+            curso = campus_selecionado.buscar_curso(id_curso)
+            if curso:
+                novo_nome = input(f"Digite o novo nome para o curso '{curso.nome}' (deixe em branco para não alterar): ")
+                novo_id = input(f"Digite o novo id para o curso '{curso.id_curso}' (deixe em branco para não alterar): ")
+                if novo_nome:
+                    curso.nome = novo_nome
+                if novo_id:
+                    curso.id_curso = novo_id
+                print("curso atualizado com sucesso.")
+            else:
+                print(f"Curso com código '{id_curso}' não encontrado")
+        elif opcao == '4':
+            id_curso = input("Digite o id do curso que deseja remover: ")
+            campus_selecionado.remover_curso(id_curso)
+        elif opcao == '5':
+            break
+        else:
+            print("opção inválida")
+
+def main():
+    ufc = Universidade("Universidade Federal do Ceará")
+
+    pici = Campus("Pici", "Fortaleza")
+    jardins_de_anita = Campus("Jardins de Anita", "Itapajé")
+    ufc.adicionar_campus(pici)
+    ufc.adicionar_campus(jardins_de_anita)
+    pici.adicionar_curso(Curso("Ciência da Computação", "CC"))
+    pici.adicionar_curso(Curso("Engenharia de Software", "ES"))
+    jardins_de_anita.adicionar_curso(Curso("Análise e Desenvolvimento de Sistemas", "ADS"))
+    print("\nDados de exemplo carregados.")
+
+    while True:
+        opcao_principal = exibir_menu_principal()
+        if opcao_principal == '1':
+            gerenciar_campi(ufc)
+        elif opcao_principal == '2':
+            gerenciar_cursos(ufc)
+        elif opcao_principal == '3':
+            print("Saindo do sistema... até mais! :D")
+            break
+        else:
+            print("opção invalida")
+
+if __name__ == "__main__":
+    main()
