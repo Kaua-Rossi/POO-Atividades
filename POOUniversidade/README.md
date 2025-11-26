@@ -4,9 +4,13 @@ Um sistema CRUD CLI simples em Python para gerenciamento de campi e cursos de um
 
 ## Estrutura de Arquivos
 
-O projeto é um monolito, composto por um único arquivo:
+O projeto é composto pelos seguintes arquivos::
 
-    main.py contém todo o código-fonte do projeto.
+    main.py: contendo a lógica de menus para o usuário interagir.
+    Classes/campus.py: contendo a classe campus e seus métodos.
+    Classes/curso.py: contendo a classe campus e seus métodos.
+    Classes/universidade.py: contendo a classe campus e seus métodos.
+    Classes/__init__.py: contendo a lógica de transformar as classes em pacotes, trazendo modularização ao projeto.
 
 ## Procedimentos para Executar o Código
 
