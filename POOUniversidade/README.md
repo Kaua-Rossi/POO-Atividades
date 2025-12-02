@@ -8,8 +8,8 @@ O projeto é composto pelos seguintes arquivos::
 
     main.py: contendo a lógica de menus para o usuário interagir.
     Classes/campus.py: contendo a classe campus e seus métodos.
-    Classes/curso.py: contendo a classe campus e seus métodos.
-    Classes/universidade.py: contendo a classe campus e seus métodos.
+    Classes/curso.py: contendo a classe curso e seus métodos.
+    Classes/universidade.py: contendo a classe universidade e seus métodos.
     Classes/__init__.py: contendo a lógica de transformar as classes em pacotes, trazendo modularização ao projeto.
 
 ## Procedimentos para Executar o Código
